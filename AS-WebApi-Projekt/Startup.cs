@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using AS_WebApi_Projekt.Data;
 
 namespace AS_WebApi_Projekt
 {
@@ -32,6 +34,9 @@ namespace AS_WebApi_Projekt
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AS_WebApi_Projekt", Version = "v1" });
             });
+
+            services.AddDbContext<AS_WebApi_ProjektContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("AS_WebApi_ProjektContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
