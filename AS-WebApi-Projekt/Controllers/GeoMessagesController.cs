@@ -22,14 +22,14 @@ namespace AS_WebApi_Projekt.Controllers
         }
 
         // GET: api/GeoMessages
-        [HttpGet]
+        [HttpGet("/api/v1/geo-comments")]
         public async Task<ActionResult<IEnumerable<GeoMessage>>> GetGeoMessage()
         {
             return await _context.GeoMessage.ToListAsync();
         }
 
         // GET: api/GeoMessages/5
-        [HttpGet("{id}")]
+        [HttpGet("/api/v1/geo-comments/{id}")]
         public async Task<ActionResult<GeoMessage>> GetGeoMessage(int id)
         {
             var geoMessage = await _context.GeoMessage.FindAsync(id);
@@ -42,62 +42,15 @@ namespace AS_WebApi_Projekt.Controllers
             return geoMessage;
         }
 
-        // PUT: api/GeoMessages/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutGeoMessage(int id, GeoMessage geoMessage)
-        {
-            if (id != geoMessage.ID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(geoMessage).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GeoMessageExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         // POST: api/GeoMessages
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("/api/v1/geo-comments")]
         public async Task<ActionResult<GeoMessage>> PostGeoMessage(GeoMessage geoMessage)
         {
             _context.GeoMessage.Add(geoMessage);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetGeoMessage", new { id = geoMessage.ID }, geoMessage);
-        }
-
-        // DELETE: api/GeoMessages/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGeoMessage(int id)
-        {
-            var geoMessage = await _context.GeoMessage.FindAsync(id);
-            if (geoMessage == null)
-            {
-                return NotFound();
-            }
-
-            _context.GeoMessage.Remove(geoMessage);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         private bool GeoMessageExists(int id)
