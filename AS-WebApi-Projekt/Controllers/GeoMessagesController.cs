@@ -45,7 +45,7 @@ namespace AS_WebApi_Projekt.Controllers
         }
 
         // POST: api/GeoMessages
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [ApiVersion("2.0")]
         [HttpPost("/api/v1/geo-comments")]
         public async Task<ActionResult<GeoMessage>> PostGeoMessage(GeoMessage geoMessage)
         {
