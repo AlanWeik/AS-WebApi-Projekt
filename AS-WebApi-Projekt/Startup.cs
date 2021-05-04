@@ -35,19 +35,25 @@ namespace AS_WebApi_Projekt
                 o.ReportApiVersions = true;
             });
 
+            services.AddVersionedApiExplorer(o =>
+            {
+                o.SubstituteApiVersionInUrl = true;
+                o.GroupNameFormat = "'v' VVV";
+            });
+
             services.AddControllers();
 
             services.AddSwaggerGen(o =>
             {
-                o.SwaggerDoc("v1", new OpenApiInfo 
+                o.SwaggerDoc("v1.0", new OpenApiInfo 
                 { 
                     Title = "AS_WebApi_Projekt", 
-                    Version = "v1" 
+                    Version = "v1.0" 
                 });
 
                 o.SwaggerDoc("v2.0", new OpenApiInfo
                 {
-                    Title = "Versioning",
+                    Title = "AS_WebApi_Projekt",
                     Version = "v2.0"
                 });
             });
@@ -63,13 +69,12 @@ namespace AS_WebApi_Projekt
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(o =>
-                {
-                    o.SwaggerEndpoint($"/swagger/v1.0/swagger.json", "v1.0");
-                    o.SwaggerEndpoint($"/swagger/v1.0/swagger.json", "v2.0");
-                });
             }
-
+            app.UseSwaggerUI(o =>
+            {
+                o.SwaggerEndpoint($"/swagger/v1.0/swagger.json", "AS_WebApi_Projekt v1.0");
+                o.SwaggerEndpoint($"/swagger/v2.0/swagger.json", "AS_WebApi_Projekt v2.0");
+            });
             app.UseHttpsRedirection();
 
             app.UseRouting();

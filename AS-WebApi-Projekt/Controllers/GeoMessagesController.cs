@@ -12,7 +12,6 @@ namespace AS_WebApi_Projekt.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [ApiVersion("1.0")]
     public class GeoMessagesController : ControllerBase
     {
         private readonly AS_WebApi_ProjektContext _context;
@@ -23,6 +22,7 @@ namespace AS_WebApi_Projekt.Controllers
         }
 
         // GET: api/GeoMessages
+        [ApiVersion("1.0")]
         [HttpGet("/api/v1/geo-comments")]
         public async Task<ActionResult<IEnumerable<GeoMessage>>> GetGeoMessage()
         {
@@ -30,7 +30,8 @@ namespace AS_WebApi_Projekt.Controllers
         }
 
         // GET: api/GeoMessages/5
-        [HttpGet("/api/v1/geo-comments/{id}")]
+        [ApiVersion("2.0")]
+        [HttpGet("/api/v2/geo-comments/{id}")]
         public async Task<ActionResult<GeoMessage>> GetGeoMessage(int id)
         {
             var geoMessage = await _context.GeoMessage.FindAsync(id);
