@@ -7,6 +7,7 @@ using AS_WebApi_Projekt.Models;
 
 namespace AS_WebApi_Projekt.Data
 {
+    // PROBLEM: DB SEEDAS EJ 
     public class AS_WebApi_ProjektContext : DbContext
     {
         public AS_WebApi_ProjektContext (DbContextOptions<AS_WebApi_ProjektContext> options)
@@ -15,12 +16,12 @@ namespace AS_WebApi_Projekt.Data
         }
 
         public DbSet<AS_WebApi_Projekt.Models.GeoMessage> GeoMessage { get; set; }
-        public DbSet<AS_WebApi_Projekt.Models.GeoMessage> Users { get; set; }
+        public DbSet<AS_WebApi_Projekt.Models.User> Users { get; set; }
 
 
         public async Task SeedDb(AS_WebApi_ProjektContext context)
         {
-            await Database.EnsureDeletedAsync();
+            //await Database.EnsureDeletedAsync();
             await Database.EnsureCreatedAsync();
 
             IList<User> Users = new List<User>();
@@ -52,6 +53,8 @@ namespace AS_WebApi_Projekt.Data
                 longitude = 593.232,
                 latitude = 72.523
             });
+            context.GeoMessage.AddRange(geoMessages);
+            context.Users.AddRange(Users);
 
 
             context.SaveChanges();

@@ -33,11 +33,12 @@ namespace AS_WebApi_Projekt
                 o.DefaultApiVersion = new ApiVersion(2, 0);
                 o.AssumeDefaultVersionWhenUnspecified = true;
                 o.ReportApiVersions = true;
+                o.UseApiBehavior = false;
             });
 
             services.AddVersionedApiExplorer(o =>
             {
-               // o.SubstituteApiVersionInUrl = true;
+                // o.SubstituteApiVersionInUrl = true;
                 o.GroupNameFormat = "'v'VVV";
             });
 
