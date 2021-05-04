@@ -10,8 +10,9 @@ using AS_WebApi_Projekt.Models;
 
 namespace AS_WebApi_Projekt.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class GeoMessagesController : ControllerBase
     {
         private readonly AS_WebApi_ProjektContext _context;
