@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AS_WebApi_Projekt.Data;
 
+// PROBLEM: FÅR EJ TAG I MEDDELANDEN
 namespace AS_WebApi_Projekt
 {
     public class Startup
