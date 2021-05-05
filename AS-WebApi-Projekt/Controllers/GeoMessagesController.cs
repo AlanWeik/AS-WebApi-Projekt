@@ -45,7 +45,7 @@ namespace AS_WebApi_Projekt.Controllers
         }
 
         // POST: api/GeoMessages
-        [ApiVersion("2.0")]
+        [ApiVersion("1.0")]
         [HttpPost("/api/v1/geo-comments")]
         public async Task<ActionResult<GeoMessage>> PostGeoMessage(GeoMessage geoMessage)
         {

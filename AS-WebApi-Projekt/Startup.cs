@@ -39,7 +39,7 @@ namespace AS_WebApi_Projekt
 
             services.AddVersionedApiExplorer(o =>
             {
-                // o.SubstituteApiVersionInUrl = true;
+                o.SubstituteApiVersionInUrl = true;
                 o.GroupNameFormat = "'v'VVV";
             });
 
