@@ -26,6 +26,12 @@ namespace AS_WebApi_Projekt.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("authorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("body")
+                        .HasColumnType("int");
+
                     b.Property<double>("latitude")
                         .HasColumnType("float");
 
@@ -35,7 +41,12 @@ namespace AS_WebApi_Projekt.Migrations
                     b.Property<string>("message")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("title")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("authorId");
 
                     b.ToTable("GeoMessage");
                 });
@@ -96,6 +107,15 @@ namespace AS_WebApi_Projekt.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("AS_WebApi_Projekt.Models.GeoMessage", b =>
+                {
+                    b.HasOne("AS_WebApi_Projekt.Models.User", "author")
+                        .WithMany()
+                        .HasForeignKey("authorId");
+
+                    b.Navigation("author");
                 });
 #pragma warning restore 612, 618
         }

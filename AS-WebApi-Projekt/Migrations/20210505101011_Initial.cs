@@ -8,21 +8,6 @@ namespace AS_WebApi_Projekt.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "GeoMessage",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    message = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    longitude = table.Column<double>(type: "float", nullable: false),
-                    latitude = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GeoMessage", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -48,6 +33,35 @@ namespace AS_WebApi_Projekt.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "GeoMessage",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    message = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    title = table.Column<int>(type: "int", nullable: false),
+                    body = table.Column<int>(type: "int", nullable: false),
+                    authorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    longitude = table.Column<double>(type: "float", nullable: false),
+                    latitude = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GeoMessage", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_GeoMessage_Users_authorId",
+                        column: x => x.authorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GeoMessage_authorId",
+                table: "GeoMessage",
+                column: "authorId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
