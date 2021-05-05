@@ -19,7 +19,7 @@ namespace AS_WebApi_Projekt.Migrations
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AS_WebApi_Projekt.Models.GeoMessage", b =>
+            modelBuilder.Entity("AS_WebApi_Projekt.Models.GeoMessageV1", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -37,7 +37,7 @@ namespace AS_WebApi_Projekt.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("GeoMessage");
+                    b.ToTable("GeoMessageV1");
                 });
 
             modelBuilder.Entity("AS_WebApi_Projekt.Models.User", b =>
@@ -96,6 +96,48 @@ namespace AS_WebApi_Projekt.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("AS_WebApi_Projekt.Models.v2.GeoMessageV2", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("GeoMessageV2");
+                });
+
+            modelBuilder.Entity("AS_WebApi_Projekt.Models.v2.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("author")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Message");
                 });
 #pragma warning restore 612, 618
         }

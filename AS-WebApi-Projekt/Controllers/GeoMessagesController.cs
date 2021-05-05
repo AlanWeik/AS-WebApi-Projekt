@@ -7,13 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AS_WebApi_Projekt.Data;
 using AS_WebApi_Projekt.Models;
+using AS_WebApi_Projekt.Models.v2;
 
 namespace AS_WebApi_Projekt.Controllers
 {
     namespace v1
     {
         [ApiVersion("1.0")]
-        [Route("api/v1/[controller]")]
+        [Route("api/v{version:apiVersion}/geo-comments")]
         [ApiController]
         public class GeoMessagesController : ControllerBase
         {
@@ -25,17 +26,17 @@ namespace AS_WebApi_Projekt.Controllers
             }
 
             // GET: api/GeoMessages
-            [HttpGet("/api/v1/geo-comments")]
-            public async Task<ActionResult<IEnumerable<GeoMessage>>> GetGeoMessage()
+            [HttpGet("")]
+            public async Task<ActionResult<IEnumerable<GeoMessageV1>>> GetGeoMessage()
             {
-                return await _context.GeoMessage.ToListAsync();
+                return await _context.GeoMessageV2.ToListAsync();
             }
 
             // POST: api/GeoMessages
-            [HttpPost("/api/v1/geo-comments")]
-            public async Task<ActionResult<GeoMessage>> PostGeoMessage(GeoMessage geoMessage)
+            [HttpPost("")]
+            public async Task<ActionResult<GeoMessageV1>> PostGeoMessage(GeoMessageV1 geoMessage)
             {
-                _context.GeoMessage.Add(geoMessage);
+                _context.GeoMessageV2.Add(geoMessage);
                 await _context.SaveChangesAsync();
 
                 return CreatedAtAction("GetGeoMessage", new { id = geoMessage.ID }, geoMessage);
@@ -46,7 +47,7 @@ namespace AS_WebApi_Projekt.Controllers
     namespace v2
     {
         [ApiVersion("2.0")]
-        [Route("api/v2/[controller]")]
+        [Route("api/v{version:apiVersion}/[controller]")]
         [ApiController]
         public class GeoMessagesController : ControllerBase
         {
@@ -59,16 +60,16 @@ namespace AS_WebApi_Projekt.Controllers
 
             // GET: api/GeoMessages
             [HttpGet("/api/v2/geo-comments")]
-            public async Task<ActionResult<IEnumerable<GeoMessage>>> GetGeoMessage()
+            public async Task<ActionResult<IEnumerable<GeoMessageV2>>> GetGeoMessage()
             {
-                return await _context.GeoMessage.ToListAsync();
+                return await _context.GeoMessageV2.ToListAsync();
             }
 
             // POST: api/GeoMessages
             [HttpPost("/api/v2/geo-comments")]
-            public async Task<ActionResult<GeoMessage>> PostGeoMessage(GeoMessage geoMessage)
+            public async Task<ActionResult<GeoMessageV2>> PostGeoMessage(GeoMessageV2 geoMessage)
             {
-                _context.GeoMessage.Add(geoMessage);
+                _context.GeoMessageV2.Add(geoMessage);
                 await _context.SaveChangesAsync();
 
                 return CreatedAtAction("GetGeoMessage", new { id = geoMessage.ID }, geoMessage);
@@ -76,9 +77,9 @@ namespace AS_WebApi_Projekt.Controllers
 
             // GET: api/GeoMessages/5
             [HttpGet("/api/v2/geo-comments/{id}")]
-            public async Task<ActionResult<GeoMessage>> GetGeoMessage(int id)
+            public async Task<ActionResult<GeoMessageV2>> GetGeoMessage(int id)
             {
-                var geoMessage = await _context.GeoMessage.FindAsync(id);
+                var geoMessage = await _context.GeoMessageV2.FindAsync(id);
 
                 if (geoMessage == null)
                 {
@@ -90,7 +91,7 @@ namespace AS_WebApi_Projekt.Controllers
 
             private bool GeoMessageExists(int id)
             {
-                return _context.GeoMessage.Any(e => e.ID == id);
+                return _context.GeoMessageV2.Any(e => e.ID == id);
             }
         }
     }

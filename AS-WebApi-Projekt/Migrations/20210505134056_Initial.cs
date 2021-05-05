@@ -8,7 +8,7 @@ namespace AS_WebApi_Projekt.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "GeoMessage",
+                name: "GeoMessageV1",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -19,7 +19,37 @@ namespace AS_WebApi_Projekt.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GeoMessage", x => x.ID);
+                    table.PrimaryKey("PK_GeoMessageV1", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GeoMessageV2",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    message = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    longitude = table.Column<double>(type: "float", nullable: false),
+                    latitude = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GeoMessageV2", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Message",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    body = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    author = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Message", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,7 +83,13 @@ namespace AS_WebApi_Projekt.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GeoMessage");
+                name: "GeoMessageV1");
+
+            migrationBuilder.DropTable(
+                name: "GeoMessageV2");
+
+            migrationBuilder.DropTable(
+                name: "Message");
 
             migrationBuilder.DropTable(
                 name: "Users");

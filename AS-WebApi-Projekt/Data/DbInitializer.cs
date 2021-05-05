@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AS_WebApi_Projekt.Data;
 using AS_WebApi_Projekt.Models;
+using AS_WebApi_Projekt.Models.v2;
 
 namespace AS_WebApi_Projekt.Data
 {
@@ -14,7 +15,8 @@ namespace AS_WebApi_Projekt.Data
             context.Database.EnsureCreated();
 
             context.RemoveRange(context.Users);
-            context.RemoveRange(context.GeoMessage);
+            context.RemoveRange(context.GeoMessageV2);
+
 
             var users = new User[]
             {
@@ -26,14 +28,14 @@ namespace AS_WebApi_Projekt.Data
             context.Users.AddRange(users);
             context.SaveChanges();
 
-            var geoMessages = new GeoMessage[]
+            var geoMessagesV2 = new GeoMessageV2[]
             {
-                new GeoMessage { message = "Absinth dricks bäst av lösa människor.", longitude = -72.523,latitude = 593.232 },
-                new GeoMessage { message = "Måttfullhet är ett ganska fult ord.", longitude = -104.45,latitude = 332.523 },
-                new GeoMessage { message = "Det regnar, ta med ett paraply.", longitude = -332.523,latitude = 124.245 },
-                new GeoMessage { message = "Fett mycket nudlar.", longitude = -124.245,latitude = 72.523 },
+                new GeoMessageV2 { message = "Absinth dricks bäst av lösa människor.", longitude = -72.523,latitude = 593.232 },
+                new GeoMessageV2 { message = "Måttfullhet är ett ganska fult ord.", longitude = -104.45,latitude = 332.523 },
+                new GeoMessageV2 { message = "Det regnar, ta med ett paraply.", longitude = -332.523,latitude = 124.245 },
+                new GeoMessageV2 { message = "Fett mycket nudlar.", longitude = -124.245,latitude = 72.523 },
             };
-            context.GeoMessage.AddRange(geoMessages);
+            context.GeoMessageV2.AddRange(geoMessagesV2);
             context.SaveChanges();
         }
     }
