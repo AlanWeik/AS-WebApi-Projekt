@@ -10,54 +10,88 @@ using AS_WebApi_Projekt.Models;
 
 namespace AS_WebApi_Projekt.Controllers
 {
-    [Route("api/v1/[controller]")]
-    [ApiController]
-    public class GeoMessagesController : ControllerBase
+    namespace v1
     {
-        private readonly AS_WebApi_ProjektContext _context;
-
-        public GeoMessagesController(AS_WebApi_ProjektContext context)
-        {
-            _context = context;
-        }
-
-        // GET: api/GeoMessages
         [ApiVersion("1.0")]
-        [HttpGet("/api/v1/geo-comments")]
-        public async Task<ActionResult<IEnumerable<GeoMessage>>> GetGeoMessage()
+        [Route("api/v1/[controller]")]
+        [ApiController]
+        public class GeoMessagesController : ControllerBase
         {
-            return await _context.GeoMessage.ToListAsync();
-        }
+            private readonly AS_WebApi_ProjektContext _context;
 
-        // GET: api/GeoMessages/5
-        [ApiVersion("2.0")]
-        [HttpGet("/api/v2/geo-comments/{id}")]
-        public async Task<ActionResult<GeoMessage>> GetGeoMessage(int id)
-        {
-            var geoMessage = await _context.GeoMessage.FindAsync(id);
-
-            if (geoMessage == null)
+            public GeoMessagesController(AS_WebApi_ProjektContext context)
             {
-                return NotFound();
+                _context = context;
             }
 
-            return geoMessage;
+            // GET: api/GeoMessages
+            [HttpGet("/api/v1/geo-comments")]
+            public async Task<ActionResult<IEnumerable<GeoMessage>>> GetGeoMessage()
+            {
+                return await _context.GeoMessage.ToListAsync();
+            }
+
+            // POST: api/GeoMessages
+            [HttpPost("/api/v1/geo-comments")]
+            public async Task<ActionResult<GeoMessage>> PostGeoMessage(GeoMessage geoMessage)
+            {
+                _context.GeoMessage.Add(geoMessage);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction("GetGeoMessage", new { id = geoMessage.ID }, geoMessage);
+            }
         }
+    }
 
-        // POST: api/GeoMessages
-        [ApiVersion("1.0")]
-        [HttpPost("/api/v1/geo-comments")]
-        public async Task<ActionResult<GeoMessage>> PostGeoMessage(GeoMessage geoMessage)
+    namespace v2
+    {
+        [ApiVersion("2.0")]
+        [Route("api/v2/[controller]")]
+        [ApiController]
+        public class GeoMessagesController : ControllerBase
         {
-            _context.GeoMessage.Add(geoMessage);
-            await _context.SaveChangesAsync();
+            private readonly AS_WebApi_ProjektContext _context;
 
-            return CreatedAtAction("GetGeoMessage", new { id = geoMessage.ID }, geoMessage);
-        }
+            public GeoMessagesController(AS_WebApi_ProjektContext context)
+            {
+                _context = context;
+            }
 
-        private bool GeoMessageExists(int id)
-        {
-            return _context.GeoMessage.Any(e => e.ID == id);
+            // GET: api/GeoMessages
+            [HttpGet("/api/v1/geo-comments")]
+            public async Task<ActionResult<IEnumerable<GeoMessage>>> GetGeoMessage()
+            {
+                return await _context.GeoMessage.ToListAsync();
+            }
+
+            // POST: api/GeoMessages
+            [HttpPost("/api/v1/geo-comments")]
+            public async Task<ActionResult<GeoMessage>> PostGeoMessage(GeoMessage geoMessage)
+            {
+                _context.GeoMessage.Add(geoMessage);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction("GetGeoMessage", new { id = geoMessage.ID }, geoMessage);
+            }
+
+            // GET: api/GeoMessages/5
+            [HttpGet("/api/v2/geo-comments/{id}")]
+            public async Task<ActionResult<GeoMessage>> GetGeoMessage(int id)
+            {
+                var geoMessage = await _context.GeoMessage.FindAsync(id);
+
+                if (geoMessage == null)
+                {
+                    return NotFound();
+                }
+
+                return geoMessage;
+            }
+
+            private bool GeoMessageExists(int id)
+            {
+                return _context.GeoMessage.Any(e => e.ID == id);
+            }
         }
     }
 }
