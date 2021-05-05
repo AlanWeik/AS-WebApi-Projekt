@@ -58,14 +58,14 @@ namespace AS_WebApi_Projekt.Controllers
             }
 
             // GET: api/GeoMessages
-            [HttpGet("/api/v1/geo-comments")]
+            [HttpGet("/api/v2/geo-comments")]
             public async Task<ActionResult<IEnumerable<GeoMessage>>> GetGeoMessage()
             {
                 return await _context.GeoMessage.ToListAsync();
             }
 
             // POST: api/GeoMessages
-            [HttpPost("/api/v1/geo-comments")]
+            [HttpPost("/api/v2/geo-comments")]
             public async Task<ActionResult<GeoMessage>> PostGeoMessage(GeoMessage geoMessage)
             {
                 _context.GeoMessage.Add(geoMessage);

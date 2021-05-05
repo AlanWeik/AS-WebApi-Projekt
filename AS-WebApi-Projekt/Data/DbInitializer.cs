@@ -35,7 +35,6 @@ namespace AS_WebApi_Projekt.Data
             };
             context.GeoMessage.AddRange(geoMessages);
             context.SaveChanges();
-
         }
     }
 }   
