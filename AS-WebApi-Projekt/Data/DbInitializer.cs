@@ -20,8 +20,8 @@ namespace AS_WebApi_Projekt.Data
             {
                 new User { firstName="Alan", lastName ="Weik", Email="SomeEmail@gmail.com"},
                 new User { firstName="Svante", lastName ="Pålsson", Email="SomeEmail@gmail.com"},
-                new User { firstName="Tom", lastName ="Pålsson", Email="SomeEmail@gmail.com"},
-                new User { firstName="Lana", lastName ="Pålsson", Email="SomeEmail@gmail.com"},
+                new User { firstName="Alfons", lastName ="Åberg", Email="SomeEmail@gmail.com"},
+                new User { firstName="James", lastName ="Brown", Email="SomeEmail@gmail.com"},
             };
             context.Users.AddRange(users);
             context.SaveChanges();
