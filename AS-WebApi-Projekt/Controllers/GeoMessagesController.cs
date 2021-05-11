@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AS_WebApi_Projekt.Data;
 using AS_WebApi_Projekt.Models;
 using AS_WebApi_Projekt.Models.v2;
+using AS_WebApi_Projekt.DTO;
 
 namespace AS_WebApi_Projekt.Controllers
 {
@@ -99,41 +100,39 @@ namespace AS_WebApi_Projekt.Controllers
                 _context = context;
             }
 
-            // GET: api/GeoMessages
-            [HttpGet("/api/v2/geo-comments")]
-            public async Task<ActionResult<IEnumerable<GeoMessageV2>>> GetGeoMessage()
+            [HttpGet("[action]")]
+            public async Task<ActionResult<IEnumerable<V2GetDTO>>> GetGeoMessages(
+                double maxLon, 
+                double minLon, 
+                double maxLat, 
+                double minLat)
             {
-                return await _context.GeoMessageV2.ToListAsync();
-            }
-
-            // POST: api/GeoMessages
-            [HttpPost("/api/v2/geo-comments")]
-            public async Task<ActionResult<GeoMessageV2>> PostGeoMessage(GeoMessageV2 geoMessage)
-            {
-                _context.GeoMessageV2.Add(geoMessage);
-                await _context.SaveChangesAsync();
-
-                return CreatedAtAction("GetGeoMessage", new { id = geoMessage.ID }, geoMessage);
-            }
-
-            // GET: api/GeoMessages/5
-            [HttpGet("/api/v2/geo-comments/{id}")]
-            public async Task<ActionResult<GeoMessageV2>> GetGeoMessage(int id)
-            {
-                var geoMessage = await _context.GeoMessageV2.FindAsync(id);
-
-                if (geoMessage == null)
+                var geoMessage = await _context.GeoMessageV2.Include(c => c.message).Where(
+                    o => (o.longitude <= maxLon
+                    && o.longitude >= minLon)
+                    && (o.latitude <= maxLat
+                    && o.latitude >= minLat)
+                    )
+                    .ToListAsync();
+                List<V2GetDTO> GeoDTOList = new List<V2GetDTO>();
+                foreach (var item in geoMessage)
                 {
-                    return NotFound();
+                    V2GetDTO geoDTO = new V2GetDTO()
+                    {
+                        latitute = item.latitude,
+                        longitude = item.longitude,
+                        message = new V2MessageDTO()
+                        {
+                            title = item.message.title,
+                            body = item.message.body,
+                            author = item.message.author
+                        }
+                    };
+                    GeoDTOList.Add(geoDTO);
                 }
-
-                return geoMessage;
+                return GeoDTOList;
             }
 
-            private bool GeoMessageExists(int id)
-            {
-                return _context.GeoMessageV2.Any(e => e.ID == id);
-            }
         }
     }
 }
