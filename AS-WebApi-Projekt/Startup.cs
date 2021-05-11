@@ -15,6 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using AS_WebApi_Projekt.Data;
 using Microsoft.AspNetCore.Authentication;
 using AS_WebApi_Projekt.Models;
+using AS_WebApi_Projekt.IService;
+using AS_WebApi_Projekt.Service;
 
 
 // PROBLEM: FÅR EJ TAG I MEDDELANDEN
@@ -47,6 +49,7 @@ namespace AS_WebApi_Projekt
             });
 
             services.AddControllers();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddSwaggerGen(o =>
             {
