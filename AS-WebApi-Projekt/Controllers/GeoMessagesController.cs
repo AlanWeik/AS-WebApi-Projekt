@@ -147,7 +147,7 @@ namespace AS_WebApi_Projekt.Controllers
             [HttpGet("{id}")]
             public async Task<ActionResult<V2GetDTO>> GetGeoMessage(int id)
             {
-                var geoMessage = await _context.GeoMessageV2.Include(a => a.message).FirstOrDefaultAsync(c. => c.ID == id);
+                var geoMessage = await _context.GeoMessageV2.Include(a => a.message).FirstOrDefaultAsync(c => c.ID == id);
                 if (geoMessage == null)
                     return NotFound();
                 var geoMessageDto = new V2GetDTO
