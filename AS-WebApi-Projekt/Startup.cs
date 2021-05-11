@@ -13,6 +13,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AS_WebApi_Projekt.Data;
+using Microsoft.AspNetCore.Authentication;
+using AS_WebApi_Projekt.Models;
+
 
 // PROBLEM: FÅR EJ TAG I MEDDELANDEN
 namespace AS_WebApi_Projekt
@@ -62,6 +65,9 @@ namespace AS_WebApi_Projekt
 
             services.AddDbContext<AS_WebApi_ProjektContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("AS_WebApi_ProjektContext")));
+            services.AddDefaultIdentity<User>().AddEntityFrameworkStores<AS_WebApi_ProjektContext>();
+            services.AddAuthentication("MyAuthScheme")
+                .AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>("MyAuthScheme", null);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
