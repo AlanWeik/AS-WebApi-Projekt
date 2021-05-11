@@ -16,9 +16,10 @@ namespace AS_WebApi_Projekt.Data
         {
         }
         // TO DO; 
-        // * Skriv en metod som konverterar V2 data till V2. 
+        // * Skriv en metod som konverterar V2 data till V1. 
         // * Skriv om controller för V1 så den anropar V2 data som konverteras till V1.
-        // * Svantes AUTH. 
+        // * Svantes AUTH.
+        // * Identity. 
         public DbSet<AS_WebApi_Projekt.Models.v2.GeoMessageV2> GeoMessageV2 { get; set; }
         public DbSet<AS_WebApi_Projekt.Models.v2.Message> Message { get; set; }
         public DbSet<AS_WebApi_Projekt.Models.User> Users { get; set; }

@@ -5,11 +5,8 @@ using System.Threading.Tasks;
 
 namespace AS_WebApi_Projekt.Models.v2
 {
-    public class GeoMessageV2
+    public class GeoMessageV2 : GeoMessageV1
     {
-        public int ID { get; set; }
-        public string message { get; set; }
-        public double longitude { get; set; }
-        public double latitude { get; set; }
+        public new Message message { get; set; }
     }
 }
