@@ -26,13 +26,11 @@ namespace AS_WebApi_Projekt
 
         private static void CreateDbIfNotExists(IHost host)
         {
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
+            using var scope = host.Services.CreateScope();
+            var services = scope.ServiceProvider;
 
-                var context = services.GetRequiredService<AS_WebApi_ProjektContext>();
-                DbInitializer.Initialize(context);
-            }
+            var context = services.GetRequiredService<AS_WebApi_ProjektContext>();
+            DbInitializer.Initialize(context);
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

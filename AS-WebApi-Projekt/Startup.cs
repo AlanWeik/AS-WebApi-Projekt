@@ -65,9 +65,7 @@ namespace AS_WebApi_Projekt
 
             services.AddDbContext<AS_WebApi_ProjektContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("AS_WebApi_ProjektContext")));
-            services.AddDefaultIdentity<User>().AddEntityFrameworkStores<AS_WebApi_ProjektContext>();
-            services.AddAuthentication("MyAuthScheme")
-                .AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>("MyAuthScheme", null);
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
