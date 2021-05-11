@@ -99,7 +99,14 @@ namespace AS_WebApi_Projekt.Controllers
             {
                 _context = context;
             }
-
+            /// <summary>
+            ///  Begränsa din sökning geografiskt med hjälp utav våra parametrar.  
+            /// </summary>
+            /// <param name="minLon">Lägst Longituden</param>
+            /// <param name="maxLon">Högsta Longituden</param>
+            /// <param name="minLat">Lägsta Latituden</param>
+            /// <param name="maxLat">Högsta Latituden</param>
+            /// <returns>Du blir returnerad en lista med GeoComments inom ramen för dina valda parametrar.</returns>
             [HttpGet("[action]")]
             public async Task<ActionResult<IEnumerable<V2GetDTO>>> GetGeoMessages(
                 double maxLon, 
@@ -119,7 +126,7 @@ namespace AS_WebApi_Projekt.Controllers
                 {
                     V2GetDTO geoDTO = new V2GetDTO()
                     {
-                        latitute = item.latitude,
+                        latitude = item.latitude,
                         longitude = item.longitude,
                         message = new V2MessageDTO()
                         {
@@ -133,6 +140,29 @@ namespace AS_WebApi_Projekt.Controllers
                 return GeoDTOList;
             }
 
+            /// <summary>
+            ///  Sök efter GeoComments med ett visst ID. 
+            /// </summary>
+            /// <returns>Du blir returnerad en lista med GeoComments inom ramen för dina valda parametrar.</returns>
+            [HttpGet("{id}")]
+            public async Task<ActionResult<V2GetDTO>> GetGeoMessage(int id)
+            {
+                var geoMessage = await _context.GeoMessageV2.Include(a => a.message).FirstOrDefaultAsync(c. => c.ID == id);
+                if (geoMessage == null)
+                    return NotFound();
+                var geoMessageDto = new V2GetDTO
+                {
+                    message = new V2MessageDTO
+                    {
+                        author = geoMessage.message.author,
+                        title = geoMessage.message.title,
+                        body = geoMessage.message.body
+                    },
+                    longitude = geoMessage.longitude,
+                    latitude = geoMessage.latitude
+                };
+                return Ok(geoMessageDto);
+            }
         }
     }
 }
