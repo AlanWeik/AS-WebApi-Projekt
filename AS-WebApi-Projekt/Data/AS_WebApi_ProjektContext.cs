@@ -7,8 +7,7 @@ using AS_WebApi_Projekt.Models;
 using AS_WebApi_Projekt.Models.v2;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-
-
+using AS_WebApi_Projekt.APIKey;
 
 namespace AS_WebApi_Projekt.Data
 {
@@ -24,6 +23,7 @@ namespace AS_WebApi_Projekt.Data
         public DbSet<AS_WebApi_Projekt.Models.GeoMessageV1> GeoMessageV1 { get; set; }
         public DbSet<AS_WebApi_Projekt.Models.v2.Message> Message { get; set; }
         public DbSet<AS_WebApi_Projekt.Models.User> User { get; set; }
+        public DbSet<AS_WebApi_Projekt.Models.ApiToken> ApiTokens { get; set; }
 
 
         public async Task SeedDb(UserManager<User> userManager)
@@ -42,7 +42,7 @@ namespace AS_WebApi_Projekt.Data
             await userManager.CreateAsync(admin1, "Test123!");
             await userManager.CreateAsync(admin2, "Test123!");
 
-            ApiTokenManager getToken = new ApiTokenManager(this);
+            TokenManager getToken = new TokenManager(this);
             await getToken.GenerateTokenAsync(admin1);
             await getToken.GenerateTokenAsync(admin2);
             await SaveChangesAsync();
