@@ -34,6 +34,6 @@ namespace AS_WebApi_Projekt.DTO
     {
         public V2MessagePostDTO message { get; set; }
         public double longitude { get; set; }
-        public double latityde { get; set; }
+        public double latitude { get; set; }
     }
 }

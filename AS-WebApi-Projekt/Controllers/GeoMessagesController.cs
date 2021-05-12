@@ -9,6 +9,8 @@ using AS_WebApi_Projekt.Data;
 using AS_WebApi_Projekt.Models;
 using AS_WebApi_Projekt.Models.v2;
 using AS_WebApi_Projekt.DTO;
+using Microsoft.AspNetCore.Authorization;
+using AS_WebApi_Projekt.APIKey;
 
 namespace AS_WebApi_Projekt.Controllers
 {
@@ -65,7 +67,7 @@ namespace AS_WebApi_Projekt.Controllers
             }
                 
             // POST: api/GeoMessages
-            //[Authorize]
+            [Authorize]
             [HttpPost("[action]")]
             public async Task <ActionResult<GeoMessageV2>> PostGeoMessages(V1GetDTO geoMessages)
             {
@@ -84,7 +86,6 @@ namespace AS_WebApi_Projekt.Controllers
             }
         }
     }
-
 
     namespace v2
     {
@@ -162,6 +163,33 @@ namespace AS_WebApi_Projekt.Controllers
                     latitude = geoMessage.latitude
                 };
                 return Ok(geoMessageDto);
+            }
+
+            public async Task<ActionResult<GeoMessageV2>> PostGeoMessages(V2PostDTO geoMessagesDTO)
+            {
+                string token = Request.Headers[Constants.HttpHeaderField];
+                if (token == null)
+                    token = Request.Query[Constants.HttpQueryParamKey];
+                var userApiDB = await _context.ApiTokens.FirstOrDefaultAsync(a => a.value == token);
+                var userID = userApiDB.User;
+
+                GeoMessageV2 geoMessagesV2 = new GeoMessageV2()
+                {
+                    message = new Message()
+                    {
+                        author = userApiDB.User.firstName + " " + userApiDB.User.lastName,
+                        body = geoMessagesDTO.message.body,
+                        title = geoMessagesDTO.message.title
+                    },
+                    latitude = geoMessagesDTO.latitude,
+                    longitude = geoMessagesDTO.longitude
+                };
+                _context.GeoMessageV2.Add(geoMessagesV2);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetGeoMessages", new
+                {
+                    id = geoMessagesV2.ID
+                }, geoMessagesV2);
             }
         }
     }
