@@ -51,7 +51,7 @@ namespace AS_WebApi_Projekt
             }
             catch (Exception ex)
             {
-                return AuthenticateResult.Fail(ex.Message);
+               return AuthenticateResult.Fail(ex.Message);
             }
 
             var claims = new[]

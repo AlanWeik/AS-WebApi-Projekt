@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AS_WebApi_Projekt.Data;
 using AS_WebApi_Projekt.Models;
 using AS_WebApi_Projekt.Models.v2;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AS_WebApi_Projekt.Controllers
 {
@@ -34,6 +35,7 @@ namespace AS_WebApi_Projekt.Controllers
 
             // POST: api/GeoMessages
             [HttpPost("")]
+            [Authorize]
             public async Task<ActionResult<GeoMessageV1>> PostGeoMessage(GeoMessageV1 geoMessage)
             {
                 _context.GeoMessageV2.Add(geoMessage);
@@ -67,6 +69,7 @@ namespace AS_WebApi_Projekt.Controllers
 
             // POST: api/GeoMessages
             [HttpPost("/api/v2/geo-comments")]
+            [Authorize]
             public async Task<ActionResult<GeoMessageV2>> PostGeoMessage(GeoMessageV2 geoMessage)
             {
                 _context.GeoMessageV2.Add(geoMessage);
