@@ -67,7 +67,7 @@ namespace AS_WebApi_Projekt.Controllers
             }
                 
             // POST: api/GeoMessages
-            [Authorize]
+            //[Authorize]
             [HttpPost("[action]")]
             public async Task <ActionResult<GeoMessageV2>> PostGeoMessages(V1GetDTO geoMessages)
             {
