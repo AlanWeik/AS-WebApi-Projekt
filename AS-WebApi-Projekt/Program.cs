@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AS_WebApi_Projekt.Data;
 
 namespace AS_WebApi_Projekt
 {

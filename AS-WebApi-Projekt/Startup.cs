@@ -13,8 +13,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AS_WebApi_Projekt.Data;
+using AS_WebApi_Projekt.Models;
+using Microsoft.AspNetCore.Authentication;
+using AS_WebApi_Projekt.APIKey;
 
-// PROBLEM: FÅR EJ TAG I MEDDELANDEN
 namespace AS_WebApi_Projekt
 {
     public class Startup
@@ -31,7 +33,7 @@ namespace AS_WebApi_Projekt
         {
             services.AddApiVersioning(o =>
             {
-                o.DefaultApiVersion = new ApiVersion(2, 0);
+                o.DefaultApiVersion = new ApiVersion(1, 0);
                 o.AssumeDefaultVersionWhenUnspecified = true;
                 o.ReportApiVersions = true;
                 o.UseApiBehavior = false;
@@ -44,7 +46,6 @@ namespace AS_WebApi_Projekt
             });
 
             services.AddControllers();
-
             services.AddSwaggerGen(o =>
             {
                 o.SwaggerDoc("v1", new OpenApiInfo 
@@ -62,6 +63,9 @@ namespace AS_WebApi_Projekt
 
             services.AddDbContext<AS_WebApi_ProjektContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("AS_WebApi_ProjektContext")));
+            services.AddDefaultIdentity<User>().AddEntityFrameworkStores<AS_WebApi_ProjektContext>();
+            services.AddAuthentication("OurAuthScheme")
+                .AddScheme<AuthenticationSchemeOptions, AuthenticationHandler>("MyAuthScheme", null);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
