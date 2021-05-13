@@ -4,14 +4,16 @@ using AS_WebApi_Projekt.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AS_WebApi_Projekt.Migrations
 {
     [DbContext(typeof(AS_WebApi_ProjektContext))]
-    partial class AS_WebApi_ProjektContextModelSnapshot : ModelSnapshot
+    [Migration("20210512133517_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

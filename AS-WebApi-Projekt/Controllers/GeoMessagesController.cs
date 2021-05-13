@@ -9,13 +9,15 @@ using AS_WebApi_Projekt.Data;
 using AS_WebApi_Projekt.Models;
 using AS_WebApi_Projekt.Models.v2;
 using AS_WebApi_Projekt.DTO;
+using Microsoft.AspNetCore.Authorization;
+using AS_WebApi_Projekt.APIKey;
 
 namespace AS_WebApi_Projekt.Controllers
 {
     namespace v1
     {
         [ApiVersion("1.0")]
-        [Route("api/v{version:apiVersion}/geo-comments")]
+        [Route("api/v{version:apiVersion}")]
         [ApiController]
         public class GeoMessagesController : ControllerBase
         {
@@ -28,13 +30,13 @@ namespace AS_WebApi_Projekt.Controllers
 
             //GET: api/GeoMessages
             [HttpGet("action")]
-            public async Task<ActionResult<IEnumerable<GeoMessageV1>>> GetGeoMessage()
+            public async Task<ActionResult<IEnumerable<V1GetDTO>>> GetGeoMessage()
             {
-                List<GeoMessageV1> V1List = new List<GeoMessageV1>();
+                List<V1GetDTO> V1List = new List<V1GetDTO>();
                 List<GeoMessageV2> V2List = await _context.GeoMessageV2.Include(c => c.message).ToListAsync();
                 foreach (var item in V2List)
                 {
-                    GeoMessageV1 geoMessage = new GeoMessageV1
+                    V1GetDTO geoMessage = new V1GetDTO
                     {
                         message = item.message.body,
                         latitude = item.latitude,
@@ -48,10 +50,10 @@ namespace AS_WebApi_Projekt.Controllers
 
             //GET: api/GeoMessages/5
             [HttpGet("[action]/{id}")]
-            public async Task<ActionResult<GeoMessageV1>> GetGeoMessages(int id)
+            public async Task<ActionResult<V1GetDTO>> GetGeoMessages(int id)
             {
                 var geoMessages = await _context.GeoMessageV2.Include(c => c.message).FirstOrDefaultAsync(a => a.ID == id);
-                var V1Model = new GeoMessageV1
+                var V1Model = new V1GetDTO
                 {
                     message = geoMessages.message.body,
                     longitude = geoMessages.longitude,
@@ -67,7 +69,7 @@ namespace AS_WebApi_Projekt.Controllers
             // POST: api/GeoMessages
             //[Authorize]
             [HttpPost("[action]")]
-            public async Task <ActionResult<GeoMessageV1>> PostGeoMessages(GeoMessageV1 geoMessages)
+            public async Task <ActionResult<GeoMessageV2>> PostGeoMessages(V1GetDTO geoMessages)
             {
                 var V2Model = new GeoMessageV2
                 {
@@ -80,16 +82,15 @@ namespace AS_WebApi_Projekt.Controllers
                 };
                 _context.GeoMessageV2.Add(V2Model);
                 await _context.SaveChangesAsync();
-                return CreatedAtAction("GetGeoMessages", new { id = geoMessages.ID }, geoMessages);
+                return CreatedAtAction("GetGeoMessages", new { id = V2Model.ID }, V2Model);
             }
         }
     }
 
-
     namespace v2
     {
         [ApiVersion("2.0")]
-        [Route("api/v{version:apiVersion}/[controller]")]
+        [Route("api/v{version:apiVersion}")]
         [ApiController]
         public class GeoMessagesController : ControllerBase
         {
@@ -162,6 +163,33 @@ namespace AS_WebApi_Projekt.Controllers
                     latitude = geoMessage.latitude
                 };
                 return Ok(geoMessageDto);
+            }
+
+            public async Task<ActionResult<GeoMessageV2>> PostGeoMessages(V2PostDTO geoMessagesDTO)
+            {
+                string token = Request.Headers[Constants.HttpHeaderField];
+                if (token == null)
+                    token = Request.Query[Constants.HttpQueryParamKey];
+                var userApiDB = await _context.ApiTokens.FirstOrDefaultAsync(a => a.value == token);
+                var userID = userApiDB.User;
+
+                GeoMessageV2 geoMessagesV2 = new GeoMessageV2()
+                {
+                    message = new Message()
+                    {
+                        author = userApiDB.User.firstName + " " + userApiDB.User.lastName,
+                        body = geoMessagesDTO.message.body,
+                        title = geoMessagesDTO.message.title
+                    },
+                    latitude = geoMessagesDTO.latitude,
+                    longitude = geoMessagesDTO.longitude
+                };
+                _context.GeoMessageV2.Add(geoMessagesV2);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetGeoMessages", new
+                {
+                    id = geoMessagesV2.ID
+                }, geoMessagesV2);
             }
         }
     }

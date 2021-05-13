@@ -1,6 +1,7 @@
 using AS_WebApi_Projekt.Data;
 using AS_WebApi_Projekt.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,25 +15,24 @@ namespace AS_WebApi_Projekt
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-
-            CreateDbIfNotExists(host);
-
-            host.Run();
-
-        }
-
-        private static void CreateDbIfNotExists(IHost host)
-        {
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-
                 var context = services.GetRequiredService<AS_WebApi_ProjektContext>();
-                DbInitializer.Initialize(context);
+                var userManager = services.GetRequiredService<UserManager<User>>();
+                try 
+                { 
+                    await context.SeedDb(userManager);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("There was an error while seeding.");
+                }
             }
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

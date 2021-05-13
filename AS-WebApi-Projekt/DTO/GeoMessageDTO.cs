@@ -5,6 +5,12 @@ using System.Threading.Tasks;
 
 namespace AS_WebApi_Projekt.DTO
 {
+    public class V1GetDTO
+    {
+        public string message { get; set; }
+        public double longitude { get; set; }
+        public double latitude { get; set; }
+    }
     public class V2MessageDTO
     {
         public string title { get; set; }
@@ -28,6 +34,6 @@ namespace AS_WebApi_Projekt.DTO
     {
         public V2MessagePostDTO message { get; set; }
         public double longitude { get; set; }
-        public double latityde { get; set; }
+        public double latitude { get; set; }
     }
 }
