@@ -31,7 +31,7 @@ namespace AS_WebApi_Projekt.Data
             await Database.EnsureDeletedAsync();
             await Database.EnsureCreatedAsync();
 
-            await Database.MigrateAsync();
+            //await Database.MigrateAsync();
 
             User admin1 = new()
             { FirstName = "Alan", LastName = "Weik", UserName = "admin1", Email = "mail@mail.com", EmailConfirmed = true };
