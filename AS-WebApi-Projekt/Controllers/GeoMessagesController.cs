@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AS_WebApi_Projekt.Data;
 using AS_WebApi_Projekt.Models;
-using AS_WebApi_Projekt.Models.v2;
 using AS_WebApi_Projekt.DTO;
 using Microsoft.AspNetCore.Authorization;
 using AS_WebApi_Projekt.APIKey;
@@ -66,7 +65,7 @@ namespace AS_WebApi_Projekt.Controllers
                 return V1Model;
             }
                 
-            // POST: api/GeoMessages
+            //POST: api/GeoMessages
             //[Authorize]
             [HttpPost("[action]")]
             public async Task <ActionResult<GeoMessageV2>> PostGeoMessages(V1GetDTO geoMessages)
@@ -165,6 +164,9 @@ namespace AS_WebApi_Projekt.Controllers
                 return Ok(geoMessageDto);
             }
 
+            //POST: api/GeoMessages
+            //[Authorize]
+            [HttpPost("[action]")]
             public async Task<ActionResult<GeoMessageV2>> PostGeoMessages(V2PostDTO geoMessagesDTO)
             {
                 string token = Request.Headers[Constants.HttpHeaderField];

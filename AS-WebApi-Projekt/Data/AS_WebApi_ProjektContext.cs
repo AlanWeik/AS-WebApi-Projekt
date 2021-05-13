@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AS_WebApi_Projekt.Models;
-using AS_WebApi_Projekt.Models.v2;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using AS_WebApi_Projekt.APIKey;
