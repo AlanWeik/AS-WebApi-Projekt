@@ -28,6 +28,12 @@ namespace AS_WebApi_Projekt.Controllers
                 _context = context;
             }
 
+            /// <summary>
+            ///  Hämta alla GeoMessages som finns. 
+            /// </summary>
+            /// <returns>
+            /// Du blir returnerad en lista med GeoMessages.
+            /// </returns>
             //GET: api/GeoMessages
             [HttpGet("[action]")]
             public async Task<ActionResult<IEnumerable<V1GetDTO>>> GetGeoMessage()
@@ -47,7 +53,12 @@ namespace AS_WebApi_Projekt.Controllers
                 return V1List;
             }
 
-
+            /// <summary>
+            ///  Sök efter GeoMessages med ett specifikt ID.  
+            /// </summary>
+            /// <returns>
+            /// Du blir returnerad en lista med GeoMessages baserat på det specificerade ID:t. 
+            /// </returns>
             //GET: api/GeoMessages/5
             [HttpGet("[action]/{id}")]
             public async Task<ActionResult<V1GetDTO>> GetGeoMessages(int id)
@@ -65,9 +76,12 @@ namespace AS_WebApi_Projekt.Controllers
                 }
                 return V1Model;
             }
-                
+
+            /// <summary>
+            ///  Posta GeoMessages (ifall du har tillstånd). 
+            /// </summary>
             //POST: api/GeoMessages
-            //[Authorize]
+            [Authorize]
             [HttpPost("[action]")]
             public async Task <ActionResult<GeoMessageV2>> PostGeoMessages(V1GetDTO geoMessages)
             {
@@ -103,13 +117,15 @@ namespace AS_WebApi_Projekt.Controllers
                 _userManager = userManager;
             }
             /// <summary>
-            ///  Begränsa din sökning geografiskt med hjälp utav våra parametrar.  
+            ///  Begränsa din sökning geografiskt med hjälp utav parametrar.  
             /// </summary>
-            /// <param name="minLon">Lägst Longituden</param>
+            /// <param name="minLon">Lägsta Longituden</param>
             /// <param name="maxLon">Högsta Longituden</param>
             /// <param name="minLat">Lägsta Latituden</param>
             /// <param name="maxLat">Högsta Latituden</param>
-            /// <returns>Du blir returnerad en lista med GeoComments inom ramen för dina valda parametrar.</returns>
+            /// <returns>
+            /// Du blir returnerad en lista med GeoMessages inom ramen för dina valda parametrar.
+            /// </returns>
             [HttpGet("[action]")]
             public async Task<ActionResult<IEnumerable<V2GetDTO>>> GetGeoMessages(
                 double maxLon, 
@@ -144,9 +160,11 @@ namespace AS_WebApi_Projekt.Controllers
             }
 
             /// <summary>
-            ///  Sök efter GeoComments med ett visst ID. 
+            ///  Sök efter GeoMessages med ett specifikt ID. 
             /// </summary>
-            /// <returns>Du blir returnerad en lista med GeoComments inom ramen för dina valda parametrar.</returns>
+            /// <returns>
+            /// Du blir returnerad en lista med GeoMessages baserat på det specificerade ID:t.
+            /// </returns>
             [HttpGet("{id}")]
             public async Task<ActionResult<V2GetDTO>> GetGeoMessage(int id)
             {
@@ -167,6 +185,9 @@ namespace AS_WebApi_Projekt.Controllers
                 return Ok(geoMessageDto);
             }
 
+            /// <summary>
+            ///  Posta GeoMessages (ifall du har tillstånd). 
+            /// </summary>
             //POST: api/GeoMessages
             [Authorize]
             [HttpPost("[action]")]

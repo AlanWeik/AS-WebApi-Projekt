@@ -17,6 +17,7 @@ using AS_WebApi_Projekt.Models;
 using Microsoft.AspNetCore.Authentication;
 using AS_WebApi_Projekt.APIKey;
 using Microsoft.AspNetCore.Identity;
+using System.IO;
 
 namespace AS_WebApi_Projekt
 {
@@ -48,6 +49,7 @@ namespace AS_WebApi_Projekt
             services.AddControllers();
             services.AddSwaggerGen(o =>
             {
+                o.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ApiDocu.xml"),true);
                 o.SwaggerDoc("v1", new OpenApiInfo 
                 { 
                     Title = "AS_WebApi_Projekt", 
@@ -66,6 +68,7 @@ namespace AS_WebApi_Projekt
             services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<AS_WebApi_ProjektContext>();
             services.AddAuthentication("MyAuthScheme")
                 .AddScheme<AuthenticationSchemeOptions, AuthenticationHandler>("MyAuthScheme", null);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
