@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AS_WebApi_Projekt.Migrations
 {
     [DbContext(typeof(AS_WebApi_ProjektContext))]
-    [Migration("20210512133517_Initial")]
+    [Migration("20210513080225_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,7 +31,7 @@ namespace AS_WebApi_Projekt.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("value")
+                    b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
@@ -41,31 +41,48 @@ namespace AS_WebApi_Projekt.Migrations
                     b.ToTable("ApiTokens");
                 });
 
-            modelBuilder.Entity("AS_WebApi_Projekt.Models.GeoMessageV1", b =>
+            modelBuilder.Entity("AS_WebApi_Projekt.Models.GeoMessageV2", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("MessageID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MessageID");
+
+                    b.ToTable("GeoMessageV2");
+                });
+
+            modelBuilder.Entity("AS_WebApi_Projekt.Models.Message", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Author")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("latitude")
-                        .HasColumnType("float");
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("longitude")
-                        .HasColumnType("float");
-
-                    b.Property<string>("message")
+                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
-                    b.ToTable("GeoMessageV1");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("GeoMessageV1");
+                    b.ToTable("Message");
                 });
 
             modelBuilder.Entity("AS_WebApi_Projekt.Models.User", b =>
@@ -86,6 +103,12 @@ namespace AS_WebApi_Projekt.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -120,12 +143,6 @@ namespace AS_WebApi_Projekt.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("firstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("lastName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -137,27 +154,6 @@ namespace AS_WebApi_Projekt.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("AS_WebApi_Projekt.Models.v2.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("author")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("body")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Message");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -295,13 +291,6 @@ namespace AS_WebApi_Projekt.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("AS_WebApi_Projekt.Models.v2.GeoMessageV2", b =>
-                {
-                    b.HasBaseType("AS_WebApi_Projekt.Models.GeoMessageV1");
-
-                    b.HasDiscriminator().HasValue("GeoMessageV2");
-                });
-
             modelBuilder.Entity("AS_WebApi_Projekt.Models.ApiToken", b =>
                 {
                     b.HasOne("AS_WebApi_Projekt.Models.User", "User")
@@ -309,6 +298,15 @@ namespace AS_WebApi_Projekt.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AS_WebApi_Projekt.Models.GeoMessageV2", b =>
+                {
+                    b.HasOne("AS_WebApi_Projekt.Models.Message", "Message")
+                        .WithMany()
+                        .HasForeignKey("MessageID");
+
+                    b.Navigation("Message");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -20,11 +20,11 @@ namespace AS_WebApi_Projekt.APIKey
         {
             var token = await _context.ApiTokens.FirstOrDefaultAsync(t => t.User.Id == user.Id);
             token ??= new ApiToken();
-            token.value = Guid.NewGuid().ToString();
+            token.Value = Guid.NewGuid().ToString();
             token.User = user;
             _context.ApiTokens.Update(token);
             _context.SaveChanges();
-            return token.value;
+            return token.Value;
         }
     }
 }

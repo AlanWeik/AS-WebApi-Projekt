@@ -39,7 +39,7 @@ namespace AS_WebApi_Projekt.APIKey
             List<ApiToken> ApiKeys = _context.ApiTokens.Include(a => a.User).ToList();
             foreach (var key in ApiKeys)
             {
-                if (token == key.value)
+                if (token == key.Value)
                 {
                     var identity = new ClaimsIdentity(Scheme.Name);
                     var principal = new ClaimsPrincipal(identity);
