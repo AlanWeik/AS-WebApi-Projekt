@@ -41,7 +41,12 @@ namespace AS_WebApi_Projekt.APIKey
             {
                 if (token == key.Value)
                 {
-                    var identity = new ClaimsIdentity(Scheme.Name);
+                    var claims = new List<Claim>
+                    {
+                    new Claim(ClaimTypes.NameIdentifier, key.User.Id),
+                    new Claim(ClaimTypes.Name, key.User.UserName)
+                    };
+                    var identity = new ClaimsIdentity(claims, Scheme.Name);
                     var principal = new ClaimsPrincipal(identity);
                     var ticket = new AuthenticationTicket(principal, Scheme.Name);
                     return AuthenticateResult.Success(ticket);

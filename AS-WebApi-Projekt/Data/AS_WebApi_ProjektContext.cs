@@ -10,28 +10,22 @@ using AS_WebApi_Projekt.APIKey;
 
 namespace AS_WebApi_Projekt.Data
 {
-    public class AS_WebApi_ProjektContext : IdentityDbContext<User>
+    public class AS_WebApi_ProjektContext : IdentityDbContext<IdentityUser>
     {
         public AS_WebApi_ProjektContext(DbContextOptions<AS_WebApi_ProjektContext> options)
             : base(options)
         {
         }
-        // * Svantes AUTH.
-        // * Identity. 
         public DbSet<AS_WebApi_Projekt.Models.GeoMessageV2> GeoMessageV2 { get; set; }
-        //public DbSet<AS_WebApi_Projekt.Models.GeoMessageV1> GeoMessageV1 { get; set; }
         public DbSet<AS_WebApi_Projekt.Models.Message> Message { get; set; }
         public DbSet<AS_WebApi_Projekt.Models.User> User { get; set; }
         public DbSet<AS_WebApi_Projekt.Models.ApiToken> ApiTokens { get; set; }
 
 
-        public async Task SeedDb(UserManager<User> userManager)
+        public async Task SeedDb(UserManager<IdentityUser> userManager)
         {
-            //await _context.Database.EnsureCreated();
             await Database.EnsureDeletedAsync();
             await Database.EnsureCreatedAsync();
-
-            //await Database.MigrateAsync();
 
             User admin1 = new()
             { FirstName = "Alan", LastName = "Weik", UserName = "admin1", Email = "mail@mail.com", EmailConfirmed = true };

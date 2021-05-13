@@ -22,14 +22,14 @@ namespace AS_WebApi_Projekt
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<AS_WebApi_ProjektContext>();
-                var userManager = services.GetRequiredService<UserManager<User>>();
+                var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
                 try 
                 { 
                     await context.SeedDb(userManager);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    Console.WriteLine("There was an error while seeding.");
+                    Console.WriteLine(e.Message);
                 }
             }
             host.Run();

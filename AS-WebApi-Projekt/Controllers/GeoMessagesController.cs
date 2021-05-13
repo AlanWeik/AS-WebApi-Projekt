@@ -10,6 +10,7 @@ using AS_WebApi_Projekt.Models;
 using AS_WebApi_Projekt.DTO;
 using Microsoft.AspNetCore.Authorization;
 using AS_WebApi_Projekt.APIKey;
+using Microsoft.AspNetCore.Identity;
 
 namespace AS_WebApi_Projekt.Controllers
 {
@@ -94,10 +95,12 @@ namespace AS_WebApi_Projekt.Controllers
         public class GeoMessagesController : ControllerBase
         {
             private readonly AS_WebApi_ProjektContext _context;
+            private readonly UserManager<IdentityUser> _userManager;
 
-            public GeoMessagesController(AS_WebApi_ProjektContext context)
+            public GeoMessagesController(AS_WebApi_ProjektContext context, UserManager<IdentityUser> userManager)
             {
                 _context = context;
+                _userManager = userManager;
             }
             /// <summary>
             ///  Begränsa din sökning geografiskt med hjälp utav våra parametrar.  
@@ -165,21 +168,17 @@ namespace AS_WebApi_Projekt.Controllers
             }
 
             //POST: api/GeoMessages
-            //[Authorize]
+            [Authorize]
             [HttpPost("[action]")]
-            public async Task<ActionResult<GeoMessageV2>> PostGeoMessages(V2PostDTO geoMessagesDTO)
+            public async Task<ActionResult<GeoMessageV2>> PostGeoMessages(V2PostDTO geoMessagesDTO, string ApiKey)
             {
-                string token = Request.Headers[Constants.HttpHeaderField];
-                if (token == null)
-                    token = Request.Query[Constants.HttpQueryParamKey];
-                var userApiDB = await _context.ApiTokens.FirstOrDefaultAsync(a => a.Value == token);
-                var userID = userApiDB.User;
+                var user = await _context.User.FindAsync(_userManager.GetUserId(User));
 
                 GeoMessageV2 geoMessagesV2 = new()
                 {
                     Message = new Message()
                     {
-                        Author = userApiDB.User.FirstName + " " + userApiDB.User.LastName,
+                        Author = user.FirstName + " " + user.LastName,
                         Body = geoMessagesDTO.Message.Body,
                         Title = geoMessagesDTO.Message.Title
                     },

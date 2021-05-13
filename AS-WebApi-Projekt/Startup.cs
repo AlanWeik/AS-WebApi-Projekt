@@ -16,6 +16,7 @@ using AS_WebApi_Projekt.Data;
 using AS_WebApi_Projekt.Models;
 using Microsoft.AspNetCore.Authentication;
 using AS_WebApi_Projekt.APIKey;
+using Microsoft.AspNetCore.Identity;
 
 namespace AS_WebApi_Projekt
 {
@@ -44,7 +45,6 @@ namespace AS_WebApi_Projekt
                 o.SubstituteApiVersionInUrl = true;
                 o.GroupNameFormat = "'v'VVV";
             });
-
             services.AddControllers();
             services.AddSwaggerGen(o =>
             {
@@ -63,8 +63,8 @@ namespace AS_WebApi_Projekt
 
             services.AddDbContext<AS_WebApi_ProjektContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("AS_WebApi_ProjektContext")));
-            services.AddDefaultIdentity<User>().AddEntityFrameworkStores<AS_WebApi_ProjektContext>();
-            services.AddAuthentication("OurAuthScheme")
+            services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<AS_WebApi_ProjektContext>();
+            services.AddAuthentication("MyAuthScheme")
                 .AddScheme<AuthenticationSchemeOptions, AuthenticationHandler>("MyAuthScheme", null);
         }
 
@@ -84,7 +84,7 @@ namespace AS_WebApi_Projekt
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
