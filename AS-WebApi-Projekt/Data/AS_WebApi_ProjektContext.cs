@@ -23,7 +23,9 @@ namespace AS_WebApi_Projekt.Data
         public DbSet<AS_WebApi_Projekt.Models.v2.Message> Message { get; set; }
         public DbSet<AS_WebApi_Projekt.Models.User> Users { get; set; }
 
-    
+        public DbSet<ApiToken> ApiTokens { get; set; }
+
+
         /*public static void SeedDb(AS_WebApi_ProjektContext context)
         {
             context.Database.EnsureCreated();
@@ -64,7 +66,7 @@ namespace AS_WebApi_Projekt.Data
             context.Users.AddRange(Users);
 
             context.SaveChanges();*/
-        }
+    }
     }
 
 
