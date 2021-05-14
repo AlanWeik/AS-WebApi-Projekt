@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AS-WebApi-Projekt</name>
+    </assembly>
+    <members>
+        <member name="M:AS_WebApi_Projekt.Controllers.v1.GeoMessagesController.GetGeoMessage">
+            <summary>
+             Hämta alla GeoMessages som finns. 
+            </summary>
+            <returns>
+            Du blir returnerad en lista med GeoMessages.
+            </returns>
+        </member>
+        <member name="M:AS_WebApi_Projekt.Controllers.v1.GeoMessagesController.GetGeoMessages(System.Int32)">
+            <summary>
+             Sök efter GeoMessages med ett specifikt ID.  
+            </summary>
+            <returns>
+            Du blir returnerad en lista med GeoMessages baserat på det specificerade ID:t. 
+            </returns>
+        </member>
+        <member name="M:AS_WebApi_Projekt.Controllers.v1.GeoMessagesController.PostGeoMessages(AS_WebApi_Projekt.DTO.V1GetDTO)">
+            <summary>
+             Posta GeoMessages (ifall du har tillstånd). 
+            </summary>
+        </member>
+        <member name="M:AS_WebApi_Projekt.Controllers.v2.GeoMessagesController.GetGeoMessages(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+             Begränsa din sökning geografiskt med hjälp utav parametrar.  
+            </summary>
+            <param name="minLon">Lägsta Longituden</param>
+            <param name="maxLon">Högsta Longituden</param>
+            <param name="minLat">Lägsta Latituden</param>
+            <param name="maxLat">Högsta Latituden</param>
+            <returns>
+            Du blir returnerad en lista med GeoMessages inom ramen för dina valda parametrar.
+            </returns>
+        </member>
+        <member name="M:AS_WebApi_Projekt.Controllers.v2.GeoMessagesController.GetGeoMessage(System.Int32)">
+            <summary>
+             Sök efter GeoMessages med ett specifikt ID. 
+            </summary>
+            <returns>
+            Du blir returnerad en lista med GeoMessages baserat på det specificerade ID:t.
+            </returns>
+        </member>
+        <member name="M:AS_WebApi_Projekt.Controllers.v2.GeoMessagesController.PostGeoMessages(AS_WebApi_Projekt.DTO.V2PostDTO,System.String)">
+            <summary>
+             Posta GeoMessages (ifall du har tillstånd). 
+            </summary>
+        </member>
+    </members>
+</doc>

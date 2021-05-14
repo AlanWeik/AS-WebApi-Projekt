@@ -18,13 +18,21 @@ namespace AS_WebApi_Projekt.APIKey
 
         public async Task<string> GenerateTokenAsync(User user)
         {
-            var token = await _context.ApiTokens.FirstOrDefaultAsync(t => t.User.Id == user.Id);
+            var token = await _context.ApiTokens
+                .FirstOrDefaultAsync(t => t.User.Id == user.Id);
+
             token ??= new ApiToken();
             token.Value = Guid.NewGuid().ToString();
             token.User = user;
             _context.ApiTokens.Update(token);
             _context.SaveChanges();
             return token.Value;
+        }
+        public async Task<User> GetUserByTokenAsync(string token)
+        {
+            return await _context.ApiTokens.Where(t => t.Value == token)
+                .Select(t => t.User)
+                .FirstOrDefaultAsync();
         }
     }
 }
