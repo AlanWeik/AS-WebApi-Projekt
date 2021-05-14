@@ -16,6 +16,7 @@ using AS_WebApi_Projekt.Data;
 using AS_WebApi_Projekt.Models;
 using Microsoft.AspNetCore.Authentication;
 using AS_WebApi_Projekt.APIKey;
+using Microsoft.AspNetCore.Identity;
 
 namespace AS_WebApi_Projekt
 {
@@ -61,11 +62,15 @@ namespace AS_WebApi_Projekt
                 });
             });
 
-            services.AddDbContext<AS_WebApi_ProjektContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("AS_WebApi_ProjektContext")));
-            services.AddDefaultIdentity<User>().AddEntityFrameworkStores<AS_WebApi_ProjektContext>();
-            services.AddAuthentication("OurAuthScheme")
-                .AddScheme<AuthenticationSchemeOptions, AuthenticationHandler>("MyAuthScheme", null);
+            services.AddDbContext<Data.AS_WebApi_ProjektContext>(options =>
+                     options.UseSqlServer(Configuration.GetConnectionString("UserDbContextConnection")));
+
+            
+            services.AddIdentityCore<IdentityUser>()
+                .AddEntityFrameworkStores<Data.AS_WebApi_ProjektContext>();
+
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

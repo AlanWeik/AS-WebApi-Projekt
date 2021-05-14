@@ -15,31 +15,29 @@ namespace AS_WebApi_Projekt
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public class MainProgram
         {
-            var host = CreateHostBuilder(args).Build();
-            using (var scope = host.Services.CreateScope())
+            public static void Main(string[] args)
             {
-                var services = scope.ServiceProvider;
-                var context = services.GetRequiredService<AS_WebApi_ProjektContext>();
-                var userManager = services.GetRequiredService<UserManager<User>>();
-                try 
-                { 
-                    await context.SeedDb(userManager);
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("There was an error while seeding.");
-                }
-            }
-            host.Run();
-        }
+                var host = CreateHostBuilder(args).Build();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+                using (var scope = host.Services.CreateScope())
+                {
+                    var provider = scope.ServiceProvider;
+
+                    Data.AS_WebApi_ProjektContext.Reset(provider).Wait();
+                }
+
+                host.Run();
+            }
+
+            public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+        }
     }
+
 }
